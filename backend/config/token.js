@@ -1,5 +1,10 @@
-const genToken = async (id) =>{
+import bcrypt from "bcryptjs"
+
+const genToken = async (userId) =>{
   try{
-    const token = await Jwt
+    const token = await jwt.sign({userId},process.env.JWT_SECRET,{expiresIn:"7d"})
+    return token
+  } catch (error) {
+    console.log("gen token error")
   }
 }

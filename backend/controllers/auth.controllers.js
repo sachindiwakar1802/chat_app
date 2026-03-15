@@ -25,6 +25,7 @@ const checkuserByUserEmail = await User.findOne({email})
     const user = await User.create({
     userName,email,password:hashedpassword,contact
     })
-
+  const token = await genToken(user._id)
+  
 }
 }
