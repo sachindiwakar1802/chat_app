@@ -1,39 +1,43 @@
-import mongoose from "mongoose"
+import mongoose from "mongoose";
 
-const userSchema  = new mongoose.Schema({
-  name:{
-    type:String,
+const userSchema = new mongoose.Schema({
+  name: {
+    type: String,
   },
-  userName:{
-    type:String,
-    required:true,
-    unique:true
+  userName: {
+    type: String,
+    required: true,
+    unique: true
   },
-    email:{
-    type:String,
-    required:true,
-    unique:true
+  email: {
+    type: String,
+    required: true,
+    unique: true
   },
-  contact:{
-    type:Number,
-    required:true,
-    unique:true
+  contact: {
+    type: Number,
+    required: function() {
+      // Contact is required only if user doesn't have googleId
+      return !this.googleId;
+    },
+    unique: true,
+    sparse: true  // Allows multiple null/undefined values
   },
-   password:{
-      type:String,
-       required:true,
-   },
-   image:{
-   type:String,
-   default:""
-   }
+  password: {
+    type: String,
+    required: true,
+  },
+  image: {
+    type: String,
+    default: ""
+  },
+  googleId: {
+    type: String,
+    unique: true,
+    sparse: true
   }
-,{timestamp:true})
+}, { timestamps: true });
 
-// from here the above we created a schema of a use now will create a model fro the user 
+const User = mongoose.model("User", userSchema);
 
-// model fro this user 
-
-const User = mongoose.model("User",userSchema)
-
-export default User
+export default User;
